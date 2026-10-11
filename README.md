@@ -1,6 +1,6 @@
 # terraform-eks-infrastructure
 
-Production-grade Amazon EKS infrastructure provisioned with Terraform — one codebase, no hardcoded values, IRSA security, dual compute (EC2 node group + Fargate), and an S3-backed remote state.
+Production-grade AWS EKS infrastructure provisioned with Terraform — one codebase, no hardcoded values, IRSA security, dual compute (EC2 node group + Fargate), and an S3-backed remote state.
 
 ## Architecture
 
