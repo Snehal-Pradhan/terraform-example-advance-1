@@ -1,0 +1,19 @@
+# Terraform state & local data
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Sensitive / environment-specific
+backend.hcl
+*.tfvars
+*.tfvars.json
+
+# Installer artifacts
+*.deb
+
+# Editor/OS
+*.swp
+.DS_Store
