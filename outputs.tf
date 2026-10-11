@@ -1,54 +1,40 @@
-output "workspace" {
-  description = "Currently active workspace"
-  value       = terraform.workspace
+output "cluster_name" {
+  description = "Name of the EKS cluster"
+  value       = module.eks.cluster_name
+}
+
+output "cluster_endpoint" {
+  description = "API server endpoint for the EKS cluster"
+  value       = module.eks.cluster_endpoint
+}
+
+output "cluster_certificate_authority_data" {
+  description = "Base64 encoded certificate data for the cluster CA"
+  value       = module.eks.cluster_certificate_authority_data
+  sensitive   = true
+}
+
+output "cluster_oidc_provider_arn" {
+  description = "OIDC provider ARN used for IRSA"
+  value       = module.eks.oidc_provider_arn
 }
 
 output "vpc_id" {
-  description = "ID of the created VPC"
+  description = "ID of the VPC"
   value       = module.vpc.vpc_id
 }
 
 output "private_subnet_ids" {
-  description = "IDs of the private subnets"
+  description = "IDs of the private subnets (nodes and control plane ENIs)"
   value       = module.vpc.private_subnets
 }
 
-output "public_subnet_ids" {
-  description = "IDs of the public subnets"
-  value       = module.vpc.public_subnets
+output "ecr_repository_url" {
+  description = "URL of the ECR repository for container images"
+  value       = aws_ecr_repository.app.repository_url
 }
 
-output "instance_ids" {
-  description = "IDs of all EC2 instances in this workspace"
-  value       = module.ec2_instance[*].id
-}
-
-output "instance_private_ips" {
-  description = "Private IPs of all EC2 instances"
-  value       = module.ec2_instance[*].private_ip
-}
-
-output "data_volume_ids" {
-  description = "IDs of the attached EBS data volumes"
-  value       = aws_ebs_volume.data[*].id
-}
-
-output "s3_bucket_names" {
-  description = "Names of all S3 buckets in this workspace"
-  value       = [for b in local.s3_buckets : b.id]
-}
-
-output "dynamodb_table_names" {
-  description = "Names of all DynamoDB tables in this workspace"
-  value       = concat(aws_dynamodb_table.prod[*].name, aws_dynamodb_table.nonprod[*].name)
-}
-
-output "kms_key_arn" {
-  description = "ARN of the workspace KMS key"
-  value       = aws_kms_key.main.arn
-}
-
-output "log_group_name" {
-  description = "CloudWatch log group for servers"
-  value       = aws_cloudwatch_log_group.servers.name
+output "configure_kubectl" {
+  description = "Run this command to configure kubectl access to the cluster"
+  value       = "aws eks update-kubeconfig --region ${var.aws_region} --name ${module.eks.cluster_name}"
 }
